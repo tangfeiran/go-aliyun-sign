@@ -1,1 +1,1 @@
-module github.com/tangfeiran/go-aliyun-sign
+module github.com/tangfeiran/go-aliyun-sign
