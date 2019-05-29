@@ -13,31 +13,6 @@ import (
 )
 
 // Sign a request with application credentials (appKey, appSecret)
-func Sign(req *http.Request, appKey, appSecret string) error {
-	ts := time.Now().UnixNano() / 1000000
-	req.Header.Set(HTTPHeaderCATimestamp, strconv.FormatInt(ts, 10))
-	r := strconv.FormatInt(time.Now().UnixNano(), 10)
-	req.Header.Set(HTTPHeaderCANonce, r)
-	req.Header.Set(HTTPHeaderCAKey, appKey)
-
-	str, hdrKeys, err := buildStringToSign(req)
-	if err != nil {
-		return err
-	}
-	log.Printf("Sign string: %s", str)
-	log.Printf("Signed Headers: %+v", hdrKeys)
-	hasher := hmac.New(sha256.New, []byte(appSecret))
-	hasher.Write([]byte(str))
-	hash := base64.StdEncoding.EncodeToString(hasher.Sum([]byte{}))
-	log.Printf("Signature: %s", hash)
-
-	req.Header.Set(HTTPHeaderCASignature, hash)
-	req.Header.Set(HTTPHeaderCASignatureHeaders, strings.Join(hdrKeys, ","))
-	return nil
-}
-
-
-// Sign a request with application credentials (appKey, appSecret)
 func SignCMS(req *http.Request, appKey, appSecret string) error {
 	ts := time.Now().UnixNano() / 1000000
 	req.Header.Set(HTTPHeaderCMSTimestamp, strconv.FormatInt(ts, 10))
@@ -72,11 +47,10 @@ func SignCMS(req *http.Request, appKey, appSecret string) error {
 func buildStringToSign(req *http.Request) (string, []string, error) {
 	s := ""
 	s += strings.ToUpper(req.Method) + "\n"
-
-	s += req.Header.Get(HTTPHeaderAccept) + "\n"
 	s += req.Header.Get(HTTPHeaderContentMD5) + "\n"
 	s += req.Header.Get(HTTPHeaderContentType) + "\n"
 	s += req.Header.Get(HTTPHeaderDate) + "\n"
+
 
 	hdrStr, hdrKeys, err := buildHeaderStringToSign(req.Header)
 	if err != nil {
@@ -103,7 +77,7 @@ func buildHeaderStringToSign(hdr http.Header) (string, []string, error) {
 		if len(kv.values) != 1 {
 			return "", nil, fmt.Errorf("do not support list of header values")
 		}
-		if strings.HasPrefix(http.CanonicalHeaderKey(kv.key), HTTPHeaderCAPrefix) {
+		if strings.HasPrefix(http.CanonicalHeaderKey(kv.key), HTTPHeaderCMSPrefix) {
 			hdrKeyList = append(hdrKeyList, kv.key)
 			hdrList = append(hdrList, kv.key+":"+kv.values[0]+"\n")
 		}
