@@ -7,6 +7,7 @@ const (
 	HTTPHeaderContentType = "Content-Type"
 	HTTPHeaderUserAgent   = "User-Agent"
 	HTTPHeaderDate        = "Date"
+	HTTPHeaderAuthorization = "Authorization"
 )
 
 // HTTP Header keys used for aliyun signature
@@ -25,7 +26,9 @@ const (
 	HTTPHeaderCMSTimestamp        = "X-Cms-Timestamp"
 	HTTPHeaderCMSNonce            = "X-Cms-Nonce"
 	HTTPHeaderCMSKey              = "X-Cms-Key"
+	HTTPHeaderCMSIP              = "X-Cms-IP"
 	HTTPHeaderCMSSignatureHeaders = "X-Cms-Signature-Headers"
+	HTTPHeaderCMSApiVsrsion = "X-Cms-Api-Version"
 )
 
 
