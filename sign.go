@@ -58,7 +58,7 @@ func SignCMS(req *http.Request, appKey, appSecret string) error {
 
 	req.Header.Set(HTTPHeaderCMSSignature, hash)
 	
-	req.Header.Set("Authorization:"+appKey+":"+hash)
+	req.Header.Set("Authorization", appKey+":"+hash)
 	
 	req.Header.Set(HTTPHeaderCMSSignatureHeaders, strings.Join(hdrKeys, ","))
 	return nil
