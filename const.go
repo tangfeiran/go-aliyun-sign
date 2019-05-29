@@ -20,5 +20,15 @@ const (
 )
 
 const (
+	HTTPHeaderCMSPrefix           = "X-Cms-"
+	HTTPHeaderCMSSignature        = "X-Cms-Signature"
+	HTTPHeaderCMSTimestamp        = "X-Cms-Timestamp"
+	HTTPHeaderCMSNonce            = "X-Cms-Nonce"
+	HTTPHeaderCMSKey              = "X-Cms-Key"
+	HTTPHeaderCMSSignatureHeaders = "X-Cms-Signature-Headers"
+)
+
+
+const (
 	defaultUserAgent = "Go-Aliyun-Client"
 )
